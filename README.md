@@ -31,8 +31,20 @@ public class JvmComprehension {
 Platform ClassLoader'у, он ничего не загрузит, передаст команду Application ClassLoader, который загрузит JvmComprehension.
 
 ### Области памяти (стэк (и его фреймы), хип, метаспейс) 
-По аналогии с лекцией
-[](https://prnt.sc/jxwAcpFO_m8Y)
+По аналогии с лекцией  
+![img](https://i.ibb.co/wRwnzwX/JVM-0.jpg)
+![img](https://i.ibb.co/yQStwWW/JVM-1.jpg)
+![img](https://i.ibb.co/zrpy888/JVM-2.jpg)
+![img](https://i.ibb.co/L6yZq5s/JVM-3.jpg)
+![img](https://i.ibb.co/wYkXvBw/JVM-4.jpg)
+![img](https://i.ibb.co/smjsm3G/JVM-5.jpg)
+![img](https://i.ibb.co/7YPdhxX/JVM-6.jpg)
+![img](https://i.ibb.co/FJbB0M6/JVM-7.jpg)
+![img](https://i.ibb.co/7z3LWsK/JVM-8.jpg)
+![img](https://i.ibb.co/M7zQm2Q/JVM-9.jpg)
+![img](https://i.ibb.co/b22t5FX/JVM-10.jpg)
+![img]https://i.ibb.co/KrKv8M4/JVM-11.jpg)
+![img](https://i.ibb.co/R7SqQC3/JVM-12.jpg)
 - сборщик мусора
 
 
