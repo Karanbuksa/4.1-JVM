@@ -43,8 +43,10 @@ Platform ClassLoader'у, он ничего не загрузит, передас
 ![img](https://i.ibb.co/7z3LWsK/JVM-8.jpg)
 ![img](https://i.ibb.co/M7zQm2Q/JVM-9.jpg)
 ![img](https://i.ibb.co/b22t5FX/JVM-10.jpg)
-![img]https://i.ibb.co/KrKv8M4/JVM-11.jpg)
+![img](https://i.ibb.co/KrKv8M4/JVM-11.jpg)
 ![img](https://i.ibb.co/R7SqQC3/JVM-12.jpg)
-- сборщик мусора
 
+### Сборщик мусора
+
+Полагаю, что сборщик мусора сначала соберёт uselessVar, так как к ней меньше всего обращений за период выполнения программы. uselessVar я бы отнёс Eden. К остальным переменным обращаются одинаково часто и чаще, чем к uselessVar. Они будут Survivor0.
 
