@@ -1,52 +1,36 @@
 
-# 4.1.1 Понимание JVM
+# 4.1.2 Исследование JVM через VisualVM
 ## Задача
 
-Описать каждую строку с точки зрения происходящего в JVM
-## Код для исследования
-```java
-public class JvmComprehension {
-    public static void main(String[] args) {
-        int i = 1;                      // 1
-        Object o = new Object();        // 2
-        Integer ii = 2;                 // 3
-        printAll(o, i, ii);             // 4
-        System.out.println("finished"); // 7
-    }
-    private static void printAll(Object o, int i, Integer ii) {
-        Integer uselessVar = 700;                   // 5
-        System.out.println(o.toString() + i + ii);  // 6
-    }
-}
-```
+Изучить использование памяти через VisualVM при загрузке новых классов и создании новых объектов
 
 ## Выполнение
 
-### ClassLoader'ы
-После компиляции файла с разрешением .java в байткод JVM нужно узнать, какие классы использовались при написании программы, чтобы корректно загрузить их.
-Данная задача выполняется ClassLoader'ами. За все классы, которые написал программист отвечает Application ClassLoader. В нашем случае он будет отвечать 
-за класс JvmComprehension. В целях безопасности Application ClassLoader не может работать один. За классы платформы, относящиеся к пакету java.util,
-отвечает Platform ClassLoader. В нашей программе классов из этого пакета я не заметил. За классы Java Core, то есть классы пакета java кроме java.util 
-отвечает Bootstrap ClassLoader. Такими в нашей программе являются System, Object и Integer. Bootstrap ClassLoader загрузит System, Object и Integer, передаст команду
-Platform ClassLoader'у, он ничего не загрузит, передаст команду Application ClassLoader, который загрузит JvmComprehension.
+### Лог консоли
+02:29:20.911: loading io.vertx  
+02:29:21.262: loaded 529 classes  
+02:29:24.275: loading io.netty  
+02:29:24.927: loaded 2117 classes  
+02:29:27.938: loading org.springframework  
+02:29:28.168: loaded 869 classes  
+02:29:31.168: now see heap  
+02:29:31.168: creating 5000000 objects  
+02:29:32.665: created  
+02:29:35.676: creating 5000000 objects  
+02:29:41.045: created  
+02:29:44.069: creating 5000000 objects  
+02:29:48.826: created  
 
-### Области памяти (стэк (и его фреймы), хип, метаспейс) 
-По аналогии с лекцией  
-![img](https://i.ibb.co/wRwnzwX/JVM-0.jpg)
-![img](https://i.ibb.co/yQStwWW/JVM-1.jpg)
-![img](https://i.ibb.co/zrpy888/JVM-2.jpg)
-![img](https://i.ibb.co/L6yZq5s/JVM-3.jpg)
-![img](https://i.ibb.co/wYkXvBw/JVM-4.jpg)
-![img](https://i.ibb.co/smjsm3G/JVM-5.jpg)
-![img](https://i.ibb.co/7YPdhxX/JVM-6.jpg)
-![img](https://i.ibb.co/FJbB0M6/JVM-7.jpg)
-![img](https://i.ibb.co/7z3LWsK/JVM-8.jpg)
-![img](https://i.ibb.co/M7zQm2Q/JVM-9.jpg)
-![img](https://i.ibb.co/b22t5FX/JVM-10.jpg)
-![img](https://i.ibb.co/KrKv8M4/JVM-11.jpg)
-![img](https://i.ibb.co/R7SqQC3/JVM-12.jpg)
+### Classes и Metaspace
+В лекции рассказывалось, что классы загружаются в Metaspace. Благодаря VisualVM явно видно корреляцию графиков Metaspace и Classes. Каждый раз, когда загружается какой-либо пакет, в Metaspace загружаются классы из этого пакета. 
+![img](https://i.ibb.co/Fb4YDvc/4-1-2-0jpg.jpg)  
 
-### Сборщик мусора
+### Heap
+Когда создаётся экземпляр класса, он отправляется в Heap. На графиках VisualVM видно, что при создании объектов в Heap'е заполняется и выделяется больше памяти.  
+![img](https://i.ibb.co/J2q4g8k/4-1-2-1jpg.jpg)  
+ Что интересно: заполнение памяти - процесс экспаненциальный, а выделение памяти - аппериодический (с института глаз натренирован видеть их, у процесса выделения памяти есть даже характерное перерегулирование в конце).  
+![img](https://i.ibb.co/kyTrvj5/image.png)
 
-Полагаю, что сборщик мусора сначала соберёт uselessVar, так как к ней меньше всего обращений за период выполнения программы. uselessVar я бы отнёс Eden. К остальным переменным обращаются одинаково часто и чаще, чем к uselessVar. Они будут Survivor0.
+
+
 
